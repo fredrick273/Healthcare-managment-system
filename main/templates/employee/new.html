@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {%csrf_token%}
+        <div class='col-sm'style="margin: 25px;">
+          <label for="entryno">Entry No: </label>
+          <input class='col-sm-4' id="entryno" type="number" name="entryno" value=""style="width: 200px"/>
+            
+          
+          <label for="user">Username: </label>
+          <input id="user" type="text" name="user" value=""style="width: 200px"/>
+          <label for="pass">Password: </label>
+          <input id="pass" type="password" name="pass" value=""style="width: 200px"/>
+          <label for="pass2">Password Conformation: </label>
+          <input id="pass2" type="text" name="pass2" value=""style="width: 200px"/>
+  
+        
+
+          <label for="Department">Department:</label>
+            <select name="Department" id="Department" required>
+            {% for Department in DepartmentList %}
+            <option value="{{Department.id}}">{{Department}}</option>  
+            {% endfor %}
+          </select>
+          <br>
+
+
+          <label for="profession">Profession:</label>
+          <select name="profession" id="profession">
+            <option>Doctor</option>
+            <option>Nurse</option>
+            <option>Reports</option>
+            <option>Lab</option>
+            <option>Pharamacy</option>
+          </select>
+
+
+          <label for="details">Details: </label>
+          <input id="details" type="text" name="details" value=""style="width: 200px"/>
+  
+         
+          <br />
+          <label for="DOJ">Joining Date</label>
+          <input class='col-sm-4'
+            id="DOJ"
+            type="date"
+            name="DOJ"
+            value=""
+            style="width: 250px"
+            default="views.now"
+          />
+          <br />
+          <label for="fname">First Name: </label>
+          <input class='col-sm-4' id="fname" type="text" name="fname" value="" style="width: 200px"/>
+          <label for="mname">Middle Name: </label>
+          <input class='col-sm-4' id="mname" type="text" name="mname" value="" style="width: 200px"/>
+          <label for="lname">Last Name: </label>
+          <input class='col-sm-4' id="lname" type="text" name="lname" value="" style="width: 200px"/>
+          <br />
+          <label for="Gender">Gender:</label>
+          <select name="Gender" id="Gender">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+          <label for="Date of birth">Date of Birth: </label>
+          <input class='col-sm-4'
+            id="Date of birth"
+            type="date"
+            name="DOB"
+            value=""
+            style="width: 250px"
+          />
+          <label for="Blood_Group">Blood_Group:</label>
+          <select name="Blood_Group" id="Gender">
+            <option>A+</option>
+            </option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>O+</option>
+            <option>O-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+          </select>
+          <br />
+          <label for="Religion">Religion</label>
+          <input class='col-sm-4'
+            id="Religion"
+            type="text"
+            name="religion"
+            value=""
+            style="width: 200px"
+          />
+          <label for="Nationality">Nationality:</label>
+          <input class='col-sm-4'
+            id="Nationality"
+            type="text"
+            name="Nationality"
+            value=""
+            style="width: 300px"
+          />
+          <br />
+          <label for="Address">Address</label>
+          <input class='col-sm-4'
+            id="Address"
+            type="text"
+            name="address"
+            value=""
+            style="width: 500px"
+          />
+          <br />
+          
+          <label for="pincode">Pincode</label>
+          <input class='col-sm-4'
+            id="pincode"
+            type="number"
+            name="pincode"
+            value=""
+            style="width: 250px"
+          />
+          <br />
+          <label for="mob">Mobile No: </label>
+          <input class='col-sm-4'
+            id="mob"
+            type="number"
+            name="mob"
+            value=""
+            style="width: 250px"
+          />
+          <label for="altmob">Alt Mobile No: </label>
+          <input class='col-sm-4'
+            id="altmob"
+            type="number"
+            name="altmob"
+            value=""
+            style="width: 250px"
+          />
+          <br />
+          <label for="Email">Email</label>
+          <input class='col-sm-4'
+            id="email"
+            type="email"
+            name="email"
+            value=""
+            style="width: 250px"
+          />
+          
+          <label for="ismarried">Marital Status: </label>
+          <select class="form-control" name="ismarried" id="ismarried">
+            <option>Married</option>
+            <option>Unmarried</option>
+            <option>Divorced</option>
+          </select>
+
+          <br />
+          <label for="Education">Education Details: </label>
+          <input class='col-sm-4'
+            id="Education"
+            type="text"
+            name="Education"
+            value=""
+            style="width: 200px"
+          />
+          <label for="Experience">Experience Details</label>
+          <input class='col-sm-4'
+            id="Experience"
+            type="text"
+            name="Experience"
+            value=""
+            style="width: 250px"
+          />
+          <br />
+          
+          <button class="btn btn-outline-primary" type="submit">Save</button>
+          
+        </div>
+      </form>
+</body>
+</html>
