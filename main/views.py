@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def home(request):
-    return HttpResponse('Hello world')
+    return HttpResponse('dhsjdjldskfjkdsjfldsxkjfk world')
 
 
 def register(request):
