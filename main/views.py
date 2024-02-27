@@ -1,11 +1,13 @@
 from django.shortcuts import render,HttpResponse,redirect,resolve_url
 from .models import Patient, Dept,Employee,Appointment
 from django.contrib.auth.models import User
+from allauth.account.decorators import login_required
+from django.conf import settings
 
 # Create your views here.
 
 def home(request):
-    return HttpResponse('dhsjdjldskfjkdsjfldsxkjfk world')
+    return render(request,'dashboard/index.html')
 
 
 def register(request):
@@ -36,8 +38,8 @@ def newDept(request):
         )
         dept.save()
         return redirect(resolve_url('home'))
-    
-    return render(request,'dept/new.html')
+    dept = Dept.objects.all()
+    return render(request,'dept/dept.html',context={'departments':dept})
 
 def newemp(request):
     if request.method == 'POST':
@@ -100,7 +102,7 @@ def op(request):
 
     if request.method == 'POST':
         appointment = Appointment(
-            Patient  = Patient.objects.get(id = request.POST.get('paitentid')),
+            Patient  = Patient.objects.get(id = request.POST.get('patientid')),
             Doctor = Employee.objects.get(id = request.POST.get('doctor')),
             datetime = request.POST.get('date')
         )
@@ -119,3 +121,27 @@ def op(request):
     
     
     return render(request, 'patient/op.html', {'patient': patient,'doctors':doctors})
+
+@login_required
+def dashboard(request):
+    user = request.user
+    doc = Employee.objects.get(User=user)
+    if doc.Profession == 'Doctor':
+        appointments = Appointment.objects.filter(Doctor = doc)
+
+        return render(request,'employee/dashboard.html',context={'appointments':appointments})
+    return redirect(resolve_url('home'))
+
+
+def patients(request):
+    p = Patient.objects.all()
+    return render(request,'patient/patients.html',context={'patients':p})
+
+def employees(request):
+    e = Employee.objects.all()
+    return render(request,'employee/employees.html',context={'employees':e})
+
+
+def appointments(request):
+    a = Appointment.objects.all()
+    return render(request,'patient/appointments.html',context={'appointments':a})

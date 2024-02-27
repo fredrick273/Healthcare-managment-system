@@ -1,40 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OP Consultation</title>
-</head>
-<body>
-    <h1>OP consultation</h1>
-    <form method="get">
-        <label for="id">Enter Patient ID:</label>
-        <input name="id" type="text">
-        <input type="submit" value="Fetch">
-    </form>
+{% extends 'base.html' %}
+{% load static %}
 
-    
-    <form method="post">
-
-        {% csrf_token %}
-        <label for="patientname">Patient Name</label>
-        <input type="text" name="" value="{% if patient %}{{patient.Name}}{% endif %}">
-        <br>
-
-        <input type="text" value="{% if patient %}{{patient.id}}{% endif %}" name="paitentid" hidden required>
-        <label for="date">Date and time:</label>
-        <input type="datetime-local" name="date" value="">
-        <br>
+{% block title %}
+<title>Appointments</title>
+{% endblock %}s
 
 
-        <label for="doctor">Doctor:</label>
-        <select name="doctor" id="">
-            {% for doctor in doctors %}
-            <option value="{{doctor.id}}">{{doctor.First_Name}} {{doctor.Middle_Name}}{{doctor.Last_Name}}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <input type="submit">
-    </form>
-</body>
-</html>
+{% block content %}
+<div class="content-body">
+  <div class="container-fluid">
+      <div class="page-titles">
+<h4>Validation</h4>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+  <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+</ol>
+      </div>
+      <!-- row -->
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4 class="card-title">Form Validation</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="form-validation">
+                          <<form method="get">
+                            <label class="col-lg-4 col-form-label" for="id">Enter Patient ID:</label>
+                            <input class="form-control" name="id" type="text">
+                            <input class="btn btn-primary" type="submit" value="Fetch">
+                        </form>
+                        
+                        <form method="post" class="form-valide">
+                            {% csrf_token %}
+                            <label class="col-lg-4 col-form-label" for="name">Patient Name</label>
+                            <input type="text" class="form-control" name="name" value="{% if patient %}{{patient.Name}}{% endif %}">
+                            <br>
+                        
+                            <input type="text" value="{% if patient %}{{patient.id}}{% endif %}" name="patientid" hidden required>
+                            
+                            <label class="col-lg-4 col-form-label" for="date">Date and Time:</label>
+                            <input type="datetime-local" class="form-control" name="date" value="">
+                            <br>
+                        
+                            <label class="col-lg-4 col-form-label" for="doctor">Doctor:</label>
+                            <select class="form-control default-select" name="doctor">
+                                {% for doctor in doctors %}
+                                <option value="{{doctor.id}}">{{doctor.First_Name}} {{doctor.Middle_Name}}{{doctor.Last_Name}}</option>
+                                {% endfor %}
+                            </select>
+                            <br>
+                            
+                            <div class="form-group row">
+                                <div class="col-lg-8 ml-auto">
+                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                </div>
+                            </div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </div>
+  </div>
+</div>
+{% endblock %}

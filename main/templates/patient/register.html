@@ -1,78 +1,159 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Register Patient</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="dob">Date of Birth</label>
-            <input type="date" class="form-control" name="dob">
-          </div>
-          <div class="form-group">
-            <label for="gender">Gender</label>
-            <select class="form-control" name="gender" id="gender">
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="ismarried">Marital Status</label>
-            <select class="form-control" name="ismarried" id="ismarried">
-              <option>Married</option>
-              <option>Unmarried</option>
-              <option>Divorced</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="profession">Profession</label>
-            <select class="form-control" name="profession" id="prof">
-              <option></option>
-              <option>Private</option>
-              <option>Social Service</option>
-              <option>Professional</option>
-              <option>Student</option>
-              <option>Unemployed</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="mobileno">Mobile Number</label>
-            <input type="text" class="form-control" name="mobileno" value="+91" required/>
-          </div>
-          <div class="form-group">
-            <label for="alternateNo">Alternate Mobile Number</label>
-            <input type="text" class="form-control" name="alternateNo" value="+91"/>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" name="email"/>
-          </div>
-          <div class="form-group">
-            <label for="age">Age</label>
-            <input type="number" class="form-control" name="age" required/>
-          </div>
-          <div class="form-group">
-            <label for="address">Address</label>
-            <textarea class="form-control" name="address" rows="5" cols="30" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="guardian">Guardian</label>
-            <input type="text" class="form-control" name="guardian">
-          </div>
-          <input type="submit" class="btn btn-outline-primary btn-lg" value="Save">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Register</title>
+{% endblock %}s
+
+
+{% block content %}
+<div class="content-body">
+  <div class="container-fluid">
+      <div class="page-titles">
+<h4>Validation</h4>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+  <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+</ol>
+      </div>
+      <!-- row -->
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4 class="card-title">Form Validation</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="form-validation">
+                          <form class="form-valide" action="" method="post">
+                            {% csrf_token %}
+                              <div class="row">
+                                  <div class="col-xl-6">
+                                      <div class="form-group row">
+                                          <label class="col-lg-4 col-form-label"  for="name">Name
+                                              <span class="text-danger">*</span>
+                                          </label>
+                                          <div class="col-lg-6">
+                                              <input type="text" class="form-control" id="val-username"  name="name" placeholder="Enter Patient Name..">
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
+                                          <label class="col-lg-4 col-form-label" for="dob">Date of Birth <span
+                                                  class="text-danger">*</span>
+                                          </label>
+                                          <div class="col-lg-6">
+                                              <input type="date" class="form-control" id="val-email" name="dob" >
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="gender">Gender
+                                          <span class="text-danger">*</span>
+                                      </label>
+                                      <div class="col-lg-6">
+                                          <select class="form-control default-select" id="val-skill" name="gender">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                            <option>Other</option>
+                                          </select>
+                                      </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="ismarried">Marital Status
+                                          <span class="text-danger">*</span>
+                                      </label>
+                                      <div class="col-lg-6">
+                                          <select class="form-control default-select" id="val-skill" name="ismarried">
+                                            <option>Married</option>
+                                            <option>Unmarried</option>
+                                            <option>Divorced</option>
+                                          </select>
+                                      </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="profession">Profession
+                                          <span class="text-danger">*</span>
+                                      </label>
+                                      <div class="col-lg-6">
+                                          <select class="form-control default-select" id="val-skill" name="profession">
+                                            <option></option>
+                                            <option>Private</option>
+                                            <option>Social Service</option>
+                                            <option>Professional</option>
+                                            <option>Student</option>
+                                            <option>Unemployed</option>
+                                            <option>Other</option>
+                                          </select>
+                                      </div>
+                                    </div>
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="mobileno">Mobile No
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <input type="text" class="form-control" id="val-phoneus" name="mobileno" value="+91" placeholder="212-999-0000">
+                                        </div>
+                                    </div>
+                                  
+                                  </div>
+                                  <div class="col-xl-6">
+                                    <div class="form-group row">
+                                      <label class="col-lg-4 col-form-label" for="alternateNo">Alternate No
+                                          <span class="text-danger">*</span>
+                                      </label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" id="val-phoneus" name="alternateNo" value="+91" placeholder="212-999-0000">
+                                      </div>
+                                    </div>
+                                      <div class="form-group row">
+                                          <label class="col-lg-4 col-form-label" for="email">Email
+                                              <span class="text-danger">*</span>
+                                          </label>
+                                          <div class="col-lg-6">
+                                              <input type="email" class="form-control" id="val-currency" name="email" >
+                                          </div>
+                                      </div>
+                                      <div class="form-group row">
+                                          <label class="col-lg-4 col-form-label" for="age">Age
+                                              <span class="text-danger">*</span>
+                                          </label>
+                                          <div class="col-lg-6">
+                                              <input type="text" class="form-control" id="val-website" name="age" >
+                                          </div>
+                                      </div>
+
+                                      <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="address">Address
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <div class="col-lg-6">
+                                            <input type="text" class="form-control" id="val-website" name="address" >
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                      <label class="col-lg-4 col-form-label" for="guardian">Guardian
+                                          <span class="text-danger">*</span>
+                                      </label>
+                                      <div class="col-lg-6">
+                                          <input type="text" class="form-control" id="val-website" name="guardian" >
+                                      </div>
+                                  </div>
+                                      
+                                      
+                                      <div class="form-group row">
+                                          <div class="col-lg-8 ml-auto">
+                                              <button type="submit" class="btn btn-primary">Submit</button>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
           </div>
           
-    </form>
-</body>
-</html>
+      </div>
+  </div>
+</div>
+{% endblock %}
