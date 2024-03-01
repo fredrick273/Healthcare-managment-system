@@ -78,3 +78,27 @@ class Appointment(models.Model):
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE,null=True,blank=True)
     Doctor = models.ForeignKey(Employee,on_delete=models.CASCADE,null=True,blank=True)
     datetime = models.DateTimeField(null=True)
+
+
+class PharmacyItem(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
+    location = models.CharField(max_length=100,null=True,blank = True)
+    curr_stock = models.IntegerField(null=True,blank=True,default=100)
+    category = models.CharField(max_length=100,null=True,blank=True,default='Medicine')
+
+    def __str__(self) -> str:
+        return self.name
+    
+    
+class PharmacyBill(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    items = models.ManyToManyField(PharmacyItem,related_name='items',through='PharmacyItemQuantity')
+    itemcount = models.IntegerField(null=True,blank=True)
+    net_total = models.IntegerField()
+    time = models.DateTimeField(auto_now_add=True, null=True)
+
+class PharmacyItemQuantity(models.Model):
+    bill = models.ForeignKey(PharmacyBill,on_delete=models.CASCADE)
+    item = models.ForeignKey(PharmacyItem,on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)

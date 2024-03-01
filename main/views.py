@@ -1,8 +1,9 @@
 from django.shortcuts import render,HttpResponse,redirect,resolve_url
-from .models import Patient, Dept,Employee,Appointment
+from .models import Patient, Dept,Employee,Appointment,PharmacyItem
 from django.contrib.auth.models import User
 from allauth.account.decorators import login_required
 from django.conf import settings
+import json
 
 # Create your views here.
 
@@ -108,7 +109,7 @@ def op(request):
         )
         appointment.save()
 
-        return HttpResponse(f"Appointment scheduled on {request.POST.get('date')}")
+        return redirect('appointments')
     patient = None
     doctors = Employee.objects.all().filter(Profession="Doctor")
     if 'id' in request.GET:
@@ -145,3 +146,33 @@ def employees(request):
 def appointments(request):
     a = Appointment.objects.all()
     return render(request,'patient/appointments.html',context={'appointments':a})
+
+def pharmcyitem(request):
+    if request.method == 'POST':
+        p = PharmacyItem(
+            name = request.POST.get('name'),
+            price = request.POST.get('price'),
+            location = request.POST.get('loc'),
+            curr_stock = request.POST.get('stock'),
+            category = request.POST.get('category')
+
+        )
+
+        p.save()
+
+        return redirect('pharmacyitem')
+    p = PharmacyItem.objects.all()
+    return render(request,'pharmacy/newitem.html',context={'items':p})
+
+
+def pharmacybill(request):
+    items = {}
+    p = PharmacyItem.objects.all()
+    patient = None
+    if 'id' in request.GET:
+        patient_id = request.GET['id']
+        try:
+            patient = Patient.objects.get(id=patient_id)
+        except Patient.DoesNotExist:
+            pass
+    return render(request,'pharmacy/bill.html',context={'items':p,'paitent':patient})

@@ -16,6 +16,9 @@ urlpatterns = [
     path('department/',views.newDept,name='department'),
     
     path('dashboard/',views.dashboard),
+
+    path('pharmacy/',views.pharmcyitem,name='pharmacyitem'),
+    path('pharmacy/bill/',views.pharmacybill,name='pharmacybill')
     
     
 ]

@@ -1,178 +1,202 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        
-        form {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        
-        input[type="text"],
-        input[type="password"],
-        input[type="number"],
-        input[type="date"],
-        input[type="email"],
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-        
-        select {
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M4 4.3L.5.7.2.3C.1.2 0 0 0 0h8c0 0-.1.2-.2.3l-.3.4L4 4.3z' fill='%23444444'/%3E%3C/svg%3E");
-            background-position: right 10px top 50%;
-            background-size: 8px 5px;
-            background-repeat: no-repeat;
-            appearance: none;
-            -moz-appearance: none;
-            -webkit-appearance: none;
-            text-indent: 0.01px;
-            text-overflow: '';
-        }
-        
-        input[type="submit"],
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        input[type="submit"]:hover,
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <form method="POST">
-        {%csrf_token%}
-        <div class='col-sm' style="margin: 25px;">
-          <label for="entryno">Entry No:</label>
-          <input class='col-sm-4' id="entryno" type="number" name="entryno" value="" style="width: 200px" />
-          
-          <label for="user">Username:</label>
-          <input id="user" type="text" name="user" value="" style="width: 200px" />
-          <label for="pass">Password:</label>
-          <input id="pass" type="password" name="pass" value="" style="width: 200px" />
-          <label for="pass2">Password Conformation:</label>
-          <input id="pass2" type="text" name="pass2" value="" style="width: 200px" />
-          
-          <label for="Department">Department:</label>
-          <select name="Department" id="Department" required>
-            {% for Department in DepartmentList %}
-            <option value="{{Department.id}}">{{Department}}</option>
-            {% endfor %}
-          </select>
-          <br>
-          
-          <label for="profession">Profession:</label>
-          <select name="profession" id="profession">
-            <option>Doctor</option>
-            <option>Nurse</option>
-            <option>Reports</option>
-            <option>Lab</option>
-            <option>Pharmacy</option>
-          </select>
-          
-          <label for="details">Details:</label>
-          <input id="details" type="text" name="details" value="" style="width: 200px" />
-          
-          <br />
-          <label for="DOJ">Joining Date:</label>
-          <input class='col-sm-4' id="DOJ" type="date" name="DOJ" value="" style="width: 250px" default="views.now" />
-          <br />
-          <label for="fname">First Name:</label>
-          <input class='col-sm-4' id="fname" type="text" name="fname" value="" style="width: 200px" />
-          <label for="mname">Middle Name:</label>
-          <input class='col-sm-4' id="mname" type="text" name="mname" value="" style="width: 200px" />
-          <label for="lname">Last Name:</label>
-          <input class='col-sm-4' id="lname" type="text" name="lname" value="" style="width: 200px" />
-          <br />
-          <label for="Gender">Gender:</label>
-          <select name="Gender" id="Gender">
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-          <label for="Date of birth">Date of Birth:</label>
-          <input class='col-sm-4' id="Date of birth" type="date" name="DOB" value="" style="width: 250px" />
-          <label for="Blood_Group">Blood Group:</label>
-          <select name="Blood_Group" id="Gender">
-            <option>A+</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B-</option>
-            <option>O+</option>
-            <option>O-</option>
-            <option>AB+</option>
-            <option>AB-</option>
-          </select>
-          <br />
-          <label for="Religion">Religion:</label>
-          <input class='col-sm-4' id="Religion" type="text" name="religion" value="" style="width: 200px" />
-          <label for="Nationality">Nationality:</label>
-          <input class='col-sm-4' id="Nationality" type="text" name="Nationality" value="" style="width: 300px" />
-          <br />
-          <label for="Address">Address:</label>
-          <input class='col-sm-4' id="Address" type="text" name="address" value="" style="width: 500px" />
-          <br />
-          <label for="pincode">Pincode:</label>
-          <input class='col-sm-4' id="pincode" type="number" name="pincode" value="" style="width: 250px" />
-          <br />
-          <label for="mob">Mobile No:</label>
-          <input class='col-sm-4' id="mob" type="number" name="mob" value="" style="width: 250px" />
-          <label for="altmob">Alt Mobile No:</label>
-          <input class='col-sm-4' id="altmob" type="number" name="altmob" value="" style="width: 250px" />
-          <br />
-          <label for="Email">Email:</label>
-          <input class='col-sm-4' id="email" type="email" name="email" value="" style="width: 250px" />
-          
-          <label for="ismarried">Marital Status:</label>
-          <select class="form-control" name="ismarried" id="ismarried">
-            <option>Married</option>
-            <option>Unmarried</option>
-            <option>Divorced</option>
-          </select>
-          
-          <br />
-          <label for="Education">Education Details:</label>
-          <input class='col-sm-4' id="Education" type="text" name="Education" value="" style="width: 200px" />
-          <label for="Experience">Experience Details:</label>
-          <input class='col-sm-4' id="Experience" type="text" name="Experience" value="" style="width: 250px" />
-          <br />
-          
-          <button type="submit">Save</button>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Register</title>
+{% endblock %}
+
+{% block content %}
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="page-titles">
+      <h4>Validation</h4>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
+        <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
+      </ol>
+    </div>
+    <!-- row -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Form Validation</h4>
+          </div>
+          <div class="card-body">
+            <div class="form-validation">
+              <form class="form-validate" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="entryno">Entry No<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="number" class="form-control" id="entryno" name="entryno">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="user">Username<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="user" name="user">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="pass">Password<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="password" class="form-control" id="pass" name="pass">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="pass2">Password Confirmation<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="password" class="form-control" id="pass2" name="pass2">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="Department">Department<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <select name="Department" id="Department" class="form-control" required>
+                          {% for Department in DepartmentList %}
+                          <option value="{{ Department.id }}">{{ Department }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="DOJ">Joining Date<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="date" class="form-control" id="DOJ" name="DOJ">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="fname">First Name<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="fname" name="fname">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="mname">Middle Name<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="mname" name="mname">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="lname">Last Name<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="lname" name="lname">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="Gender">Gender<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <select name="Gender" id="Gender" class="form-control">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="DOB">Date of Birth<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="date" class="form-control" id="DOB" name="DOB">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="Blood_Group">Blood Group<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <select name="Blood_Group" id="Blood_Group" class="form-control">
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6">
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="Religion">Religion<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="Religion" name="religion">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="Nationality">Nationality<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="Nationality" name="Nationality">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="address">Address<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="address" name="address">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="pincode">Pincode<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="number" class="form-control" id="pincode" name="pincode">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="mob">Mobile No<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="number" class="form-control" id="mob" name="mob">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="altmob">Alt Mobile No<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="number" class="form-control" id="altmob" name="altmob">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="edu">Education<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="edu" name="Education">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="exp">Experience<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" id="exp" name="Experience">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="email">Email<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <input type="email" class="form-control" id="email" name="email">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" for="ismarried">Marital Status<span class="text-danger">*</span></label>
+                      <div class="col-lg-6">
+                        <select name="ismarried" id="ismarried" class="form-control">
+                          <option value="Married">Married</option>
+                          <option value="Unmarried">Unmarried</option>
+                          <option value="Divorced">Divorced</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8 ml-auto">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
-</body>
-</html>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
