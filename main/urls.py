@@ -18,7 +18,8 @@ urlpatterns = [
     path('dashboard/',views.dashboard),
 
     path('pharmacy/',views.pharmcyitem,name='pharmacyitem'),
-    path('pharmacy/bill/',views.pharmacybill,name='pharmacybill')
+    path('pharmacy/bill/',views.pharmacybill,name='pharmacybill'),
+    path('pharmacy/bill/<int:id>/',views.pharmacyviewbill,name='pharmacyviewbill')
     
     
 ]

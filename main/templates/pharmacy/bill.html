@@ -3,9 +3,6 @@
 {% load static %}
 
 
-
-
-
 {% block title %}
 <title>Dashboard</title>
 {% endblock %}
@@ -34,7 +31,7 @@
                         <label class="col-form-label" for="id">Enter Patient ID:</label>
                     </div>
                     <div class="col-lg-4">
-                        <input class="form-control" name="id" type="text">
+                        <input class="form-control"  {% if patient %} value="{{patient.id}}" {% endif %}  name="id" type="text">
                     </div>
                     <div class="col-lg-2">
                         <input class="btn btn-primary" type="submit" value="Fetch">
@@ -47,7 +44,7 @@
                         <label for="">Patient Name</label>
                     </div>
                     <div class="col-lg-2">
-                        <input type="text" {% if patient %} value="{{patient.Name}}" {% endif %} class="form-control">
+                        <input style="width: 150px;" type="text" {% if patient %} value="{{patient.Name}}" {% endif %} class="form-control">
                     </div>
                 </div>
             </div>
@@ -99,6 +96,23 @@
                 </table>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <label for="">Net total</label>
+        </div>
+        <div class="col-lg-2">
+            <input type="text" id="nettotal" disabled value="0" class="form-control">
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type="text" name="patient-id" hidden {% if patient %} value="{{patient.id}}" {% endif %} >
+            <input type="text" name="items" hidden id="item-json" >
+            <input class="btn btn-primary" type="submit" value="Make Bill">
+
+        </form>
+    </div>
     </div>
 </div>
 </div>
@@ -160,7 +174,7 @@
         items[i].quantity = this.value;
         cell5.textContent = items[i].price * items[i].quantity;
         console.log(items);
-        
+        renderamount()
     });
 
     }
@@ -192,8 +206,19 @@
         }else{
         addrow(name, price,id);}
         }
+
+        renderamount();
     });
 
+function renderamount(){
+    let amt = 0;
+    for(let i in items){
+        let itemamt = items[i].price * items[i].quantity;
+        amt = amt + itemamt;
+    }   
+    document.querySelector("#nettotal").value = amt;
+    document.querySelector("#item-json").value = JSON.stringify(items);
+}
     
 </script>
 

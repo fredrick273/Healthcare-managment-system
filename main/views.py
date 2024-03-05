@@ -1,9 +1,16 @@
-from django.shortcuts import render,HttpResponse,redirect,resolve_url
-from .models import Patient, Dept,Employee,Appointment,PharmacyItem
+from django.shortcuts import render,HttpResponse,redirect,resolve_url,get_object_or_404
+from .models import Patient, Dept,Employee,Appointment,PharmacyItem,PharmacyBill,PharmacyItemQuantity
 from django.contrib.auth.models import User
 from allauth.account.decorators import login_required
 from django.conf import settings
 import json
+
+from django.http import HttpResponse
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet
+from .models import PharmacyBill, PharmacyItemQuantity
 
 # Create your views here.
 
@@ -166,7 +173,33 @@ def pharmcyitem(request):
 
 
 def pharmacybill(request):
-    items = {}
+    if request.method == 'POST':
+        p = Patient.objects.get(id = request.POST.get('patient-id'))
+        items = json.loads(request.POST.get('items'))
+        bill = PharmacyBill(
+            patient = p,
+            itemcount = 0,
+            net_total = 0
+        )
+        bill.save()
+        amt = 0
+        item_count = 0
+        for i in items:
+            curr_item = PharmacyItem.objects.get(id = int(i['id']))
+            curr_quantity = int(i['quantity'])
+            bill_item = PharmacyItemQuantity(
+                bill= bill,
+                item = curr_item,
+                quantity = curr_quantity
+            )
+            bill_item.save()
+            amt += curr_quantity * curr_item.price
+            item_count += curr_quantity
+        bill.net_total = amt
+        bill.itemcount = item_count
+        bill.save()
+        return redirect('pharmacyviewbill',id=bill.id)
+
     p = PharmacyItem.objects.all()
     patient = None
     if 'id' in request.GET:
@@ -175,4 +208,50 @@ def pharmacybill(request):
             patient = Patient.objects.get(id=patient_id)
         except Patient.DoesNotExist:
             pass
-    return render(request,'pharmacy/bill.html',context={'items':p,'paitent':patient})
+    return render(request,'pharmacy/bill.html',context={'items':p,'patient':patient})
+
+
+
+def pharmacyviewbill(request, id):
+    bill = get_object_or_404(PharmacyBill, id=id)
+
+    # Create a PDF document
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="bill_{id}.pdf"'
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # Add bill details
+    elements.append(Paragraph(f"Patient: {bill.patient.Name}", styles['Normal']))
+    elements.append(Paragraph(f"Date: {bill.time}", styles['Normal']))
+    elements.append(Paragraph("Items:", styles['Heading2']))
+
+    # Add item details
+    data = [['Item', 'Price', 'Quantity', 'Total']]
+    total_cost = 0
+    for item_quantity in bill.pharmacyitemquantity_set.all():
+        item = item_quantity.item
+        quantity = item_quantity.quantity
+        total_item_cost = item.price * quantity
+        total_cost += total_item_cost
+        data.append([item.name, item.price, quantity, total_item_cost])
+
+    # Add table to the document
+    table = Table(data)
+    style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Courier-Bold'),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+    table.setStyle(style)
+    elements.append(table)
+
+    # Add total cost
+    elements.append(Paragraph(f"Total Cost: {total_cost}", styles['Normal']))
+
+    # Build the PDF document
+    doc.build(elements)
+    return response
