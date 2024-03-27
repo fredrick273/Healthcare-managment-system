@@ -102,3 +102,12 @@ class PharmacyItemQuantity(models.Model):
     bill = models.ForeignKey(PharmacyBill,on_delete=models.CASCADE)
     item = models.ForeignKey(PharmacyItem,on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+
+
+class Prescription(models.Model):
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    diagnosis = models.CharField(max_length = 200)
+    remarks = models.CharField(max_length=200)
+    
