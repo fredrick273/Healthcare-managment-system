@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect,resolve_url,get_object_or_404
-from .models import Patient, Dept,Employee,Appointment,PharmacyItem,PharmacyBill,PharmacyItemQuantity
+from .models import Patient, Dept,Employee,Appointment,PharmacyItem,PharmacyBill,PharmacyItemQuantity,Prescription
 from django.contrib.auth.models import User
 from allauth.account.decorators import login_required
 from django.conf import settings
@@ -10,7 +10,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet
-from .models import PharmacyBill, PharmacyItemQuantity
+
 
 # Create your views here.
 
@@ -251,6 +251,81 @@ def pharmacyviewbill(request, id):
 
     # Add total cost
     elements.append(Paragraph(f"Total Cost: {total_cost}", styles['Normal']))
+
+    # Build the PDF document
+    doc.build(elements)
+    return response
+
+
+def prescription(request): 
+    if request.method == 'POST':
+        pres = Prescription(
+            patient  = Patient.objects.get(id = request.POST.get('patientid')),
+            doctor = Employee.objects.get(id = request.POST.get('doctor')),
+            medications = request.POST.get('medications'),
+            remarks = request.POST.get('remarks'),
+            diagnosis = request.POST.get('diagnosis')
+        )
+
+        pres.save()
+
+        return redirect(resolve_url('home'))
+
+
+    doctors = Employee.objects.all().filter(Profession="Doctor")
+   
+    patient = None
+    if 'id' in request.GET:
+        patient_id = request.GET['id']
+        try:
+            patient = Patient.objects.get(id=patient_id)
+        except Patient.DoesNotExist:
+            pass
+    return render(request,'prescription/new.html',context={'patient':patient,'doctors':doctors})
+
+
+
+def view_prescription(request, id):
+    prescription = get_object_or_404(Prescription, id=id)
+
+    # Create a PDF document
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="prescription_{id}.pdf"'
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # Add prescription details
+    elements.append(Paragraph(f"Patient: {prescription.patient.Name}", styles['Normal']))
+    elements.append(Paragraph(f"Doctor: {prescription.doctor}", styles['Normal']))
+    elements.append(Paragraph(f"Diagnosis: {prescription.diagnosis}", styles['Normal']))
+    elements.append(Paragraph(f"Remarks: {prescription.remarks}", styles['Normal']))
+    elements.append(Paragraph(f"Time: {prescription.time}", styles['Normal']))
+    elements.append(Paragraph("Medications:", styles['Heading2']))
+
+    # Parse medications JSON and add to the document
+    if prescription.medications:
+        medications_data = json.loads(prescription.medications)
+        data = [['Name', 'Quantity', 'Morning', 'Afternoon', 'Night']]
+        for med_data in medications_data:
+            data.append([
+                med_data.get('name', ''),
+                med_data.get('quantity', ''),
+                'Yes' if med_data.get('morning', False) else 'No',
+                'Yes' if med_data.get('afternoon', False) else 'No',
+                'Yes' if med_data.get('night', False) else 'No'
+            ])
+        # Add table to the document
+        table = Table(data)
+        style = TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.gray),
+                            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                            ('FONTNAME', (0, 0), (-1, 0), 'Courier-Bold'),
+                            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                            ('GRID', (0, 0), (-1, -1), 1, colors.black)])
+        table.setStyle(style)
+        elements.append(table)
 
     # Build the PDF document
     doc.build(elements)

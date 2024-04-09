@@ -107,7 +107,8 @@ class PharmacyItemQuantity(models.Model):
 class Prescription(models.Model):
     patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     doctor = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True, null=True)
-    diagnosis = models.CharField(max_length = 200)
+    medications = models.TextField(blank=True, null=True)
+    diagnosis = models.CharField(max_length=200)
     remarks = models.CharField(max_length=200)
+    time = models.DateTimeField(auto_now_add=True, null=True)
     

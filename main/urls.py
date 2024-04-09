@@ -19,7 +19,10 @@ urlpatterns = [
 
     path('pharmacy/',views.pharmcyitem,name='pharmacyitem'),
     path('pharmacy/bill/',views.pharmacybill,name='pharmacybill'),
-    path('pharmacy/bill/<int:id>/',views.pharmacyviewbill,name='pharmacyviewbill')
+    path('pharmacy/bill/<int:id>/',views.pharmacyviewbill,name='pharmacyviewbill'),
     
+    path('prescription/',views.prescription,name='prescription'),
+    path('prescription/<int:id>/',views.view_prescription,name='viewprescription')
+
     
 ]
