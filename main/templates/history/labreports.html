@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Dashboard</title>
+{% endblock %}
+
+{% block head %}
+    <link href="{% static 'main/vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
+            <div class="mr-auto">
+                <h2 class="text-black font-w600">Patient History</h2>
+                <p class="mb-0">Hospital Admin Dashboard Template</p>
+            </div>
+            
+        </div>
+        <!-- Add Order -->
+
+        <div class="row">
+            <div class="col-lg-6">
+                <form method="get" class="row">
+                    <div class="col-lg-4">
+                        <label class="col-form-label" for="id">Enter Patient ID:</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input class="form-control"  {% if patient %} value="{{patient.id}}" {% endif %}  name="id" type="text">
+                    </div>
+                    <div class="col-lg-2">
+                        <input class="btn btn-primary" type="submit" value="Fetch">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="">Patient Name</label>
+                    </div>
+                    <div class="col-lg-2">
+                        <input style="width: 150px;" type="text" {% if patient %} value="{{patient.Name}}" {% endif %} class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="table-responsive card-table">
+                    {% if reports %}
+                    <table id="example5" class="display dataTablesCard white-border table-responsive-xl">
+                        <thead>
+                            <tr>
+                                
+                                <th>ID</th>
+                                <th>Doctor</th>
+                                <th>Date and Time</th>
+                                <th>Download</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in reports %}
+                            <tr>
+                                
+                                <td>{{report.id}}</td>
+                                <td>{{report.doctor.First_Name}} {{report.doctor.employee.Last_Name}}</td>
+                                <td>{{report.time}}</td>
+                                <td><a href="{% url 'viewlabreport' report.id %}">Download</a></td>
+                                
+                               
+                                
+                                
+                                <!-- <td>
+                                    <span class="badge badge-warning light">
+                                        <i class="fa fa-circle text-warning mr-1"></i>
+                                        In Treatment
+                                    </span>
+                                </td> -->
+                                
+                                
+                            {% endfor %}
+                            
+                    </tbody>
+                
+                </table>
+                {% else %}
+                <p>No Records Found</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+<script src="{% static 'main/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
+	<script>
+		(function($) {
+			var table = $('#example5').DataTable({
+				searching: false,
+				paging:true,
+				select: false,
+				//info: false,         
+				lengthChange:false 
+				
+			});
+			$('#example tbody').on('click', 'tr', function () {
+				var data = table.row( this ).data();
+				
+			});
+		})(jQuery);
+	</script>
+    {% endblock %}

@@ -630,7 +630,7 @@
 							<li><a href="{% url 'registerpatients' %}">New Patient</a></li>
 							<li><a href="{% url 'newappointment' %}">New Appointments</a></li>
 							<li><a href="{% url 'appointments' %}">Appointments</a></li>
-							<li><a href="reviews.html">Reviews</a></li>
+							<li><a href="{% url 'prescription' %}">Prescription</a></li>
 						</ul>
                     </li>
                     <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
@@ -660,6 +660,30 @@
 					</ul>
 
 				</li>
+
+				<li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+					<i class="flaticon-381-television"></i>
+					<span class="nav-text">Lab</span>
+				</a>
+				<ul aria-expanded="false">
+					<li><a href="{% url 'labtests' %}">Tests</a></li>
+					<li><a href="{% url 'newlabtest' %}">New Test</a></li>
+					<li><a href="{% url 'labreport' %}">Generate Report</a></li>
+				</ul>
+
+			</li>
+
+			<li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+				<i class="flaticon-381-television"></i>
+				<span class="nav-text">History</span>
+			</a>
+			<ul aria-expanded="false">
+				<li><a href="{% url 'prescriptionhistory' %}">Prescription</a></li>
+				<li><a href="{% url 'labhistory' %}">Lab Reports</a></li>
+				<li><a href="{% url 'billhistory' %}">Bills</a></li>
+			</ul>
+
+		</li>
                     <!-- <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-controls-3"></i>
 							<span class="nav-text">Charts</span>

@@ -112,3 +112,22 @@ class Prescription(models.Model):
     remarks = models.CharField(max_length=200)
     time = models.DateTimeField(auto_now_add=True, null=True)
     
+
+class Test(models.Model):
+    name = models.CharField(max_length=30)
+    units = models.CharField(max_length=10)
+    ref1 = models.CharField(max_length=10)
+    ref2 = models.CharField(max_length=10,null=True)
+    ref3 = models.CharField(max_length=10, null=True)
+    amount = models.IntegerField()
+
+class LabTestResult(models.Model):
+    doctor = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    result = models.ManyToManyField(Test,related_name='lab_items',through='LabTestResultItem')
+    time = models.DateTimeField(auto_now_add=True, null=True)    
+
+class LabTestResultItem(models.Model):
+    test = models.ForeignKey(Test,on_delete=models.CASCADE)
+    result = models.ForeignKey(LabTestResult,on_delete=models.CASCADE)
+    value = models.CharField(max_length=15)

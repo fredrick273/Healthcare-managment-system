@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Appointments</title>
+{% endblock %}s
+
+
+{% block content %}
+<div class="content-body">
+  <div class="container-fluid">
+      <div class="page-titles">
+<h4>Lab Test</h4>
+
+      </div>
+      <!-- row -->
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="card">
+                  
+                  <div class="card-body">
+                      <div class="form-validation">
+                          
+                        
+                        <form method="post" class="form-valide">
+                            {% csrf_token %}
+                            <label class="col-lg-4 col-form-label" for="name">Name</label>
+                            <input type="text" class="form-control" name="name" >
+                            <br>
+
+                            <label class="col-lg-4 col-form-label" for="units">Units</label>
+                            <input type="text" class="form-control" name="units" >
+                            <br>
+
+                            <label class="col-lg-4 col-form-label" for="ref1">Reference 1</label>
+                            <input type="text" class="form-control" name="ref1" >
+                            <br>
+
+                            <label class="col-lg-4 col-form-label" for="ref2">Reference 2</label>
+                            <input type="text" class="form-control" name="ref2" >
+                            <br>
+
+                            <label class="col-lg-4 col-form-label" for="ref3">Reference 3</label>
+                            <input type="text" class="form-control" name="ref3" >
+                            <br>
+
+                            <label class="col-lg-4 col-form-label" for="amt">Amount</label>
+                            <input type="text" class="form-control" name="amt" >
+                            <br>
+                        
+                            <br>
+                            
+                            <div class="form-group row">
+                                <div class="col-lg-8 ml-auto">
+                                    <input type="submit" class="btn btn-primary" value="Submit">
+                                </div>
+                            </div>
+                        </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
+      </div>
+  </div>
+</div>
+{% endblock %}

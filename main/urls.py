@@ -22,7 +22,15 @@ urlpatterns = [
     path('pharmacy/bill/<int:id>/',views.pharmacyviewbill,name='pharmacyviewbill'),
     
     path('prescription/',views.prescription,name='prescription'),
-    path('prescription/<int:id>/',views.view_prescription,name='viewprescription')
+    path('prescription/<int:id>/',views.view_prescription,name='viewprescription'),
 
     
+    path('lab/new/',views.newlabtest,name='newlabtest'),
+    path('lab/',views.labtests,name='labtests'),
+    path('lab/report/',views.labreport,name='labreport'),
+    path('lab/report/<int:id>/',views.viewlabreport,name='viewlabreport'),
+
+    path('history/prescription/',views.prescriptionhistory,name='prescriptionhistory'),
+    path('history/lab/',views.labhistory,name='labhistory'),
+    path('history/bills/',views.billhistory,name='billhistory'),
 ]

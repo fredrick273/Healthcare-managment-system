@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Dashboard</title>
+{% endblock %}
+
+{% block head %}
+    
+    
+{% endblock %}
+
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
+            <div class="mr-auto">
+                <h2 class="text-black font-w600">Lab Report</h2>
+                <p class="mb-0">Hospital Admin Dashboard</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <form id="patient-form" class="row">
+                    <div class="col-lg-4">
+                        <label class="col-form-label" for="patient-id">Enter Patient ID:</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="patient-id" class="form-control" {% if patient %} value="{{patient.id}}" {% endif %}  name="id" type="text">
+                    </div>
+                    <div class="col-lg-2">
+                        <input class="btn btn-primary" type="submit" value="Fetch">
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label for="patient-name">Patient Name</label>
+                    </div>
+                    <div class="col-lg-4">
+                        <input id="patient-name" style="width: 150px;" type="text" {% if patient %} value="{{patient.Name}}" {% endif %} class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <select id="test-select">
+                <option value="">Select</option>
+                {% for test in tests %}
+                    <option data-id="{{ test.id }}" data-ref1="{{ test.ref1 }}" data-ref2="{{ test.ref2 }}" data-ref3="{{ test.ref3 }}" value="{{ test.id }}">{{ test.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="table-responsive card-table">
+                    <table id="itemtable" class="table table-striped table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th>Ref 1</th>
+                                <th>Ref 2</th>
+                                <th>Ref 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <form id="make-bill-form" action="" method="post">
+                {% csrf_token %}
+                <input type="text" name="patient-id" hidden {% if patient %} value="{{patient.id}}" {% endif %} >
+                <input type="text" name="items" hidden id="item-json" >
+                <div class="row">
+                <label class="col-lg-4 col-form-label" for="doctor">Doctor:</label>
+                <select class="form-control default-select" name="doctor">
+                    {% for doctor in doctors %}
+                    <option value="{{doctor.id}}">{{doctor.First_Name}} {{doctor.Middle_Name}}{{doctor.Last_Name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+                <input class="btn btn-primary" type="submit" value="Generate Report">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'main/js/custom.min.js' %}"></script>
+<script src="{% static 'main/js/deznav-init.js' %}"></script>
+<script>
+    let tests = [];
+
+    function addRow(name, id, ref1, ref2, ref3) {
+        const table = document.querySelector('#itemtable tbody');
+        const newRow = table.insertRow(-1);
+
+        let testJson = {
+            id: id,
+            name: name,
+            value: 0
+        };
+        tests.push(testJson);
+
+
+        const cell1 = newRow.insertCell(0);
+        const cell2 = newRow.insertCell(1);
+        const cell3 = newRow.insertCell(2);
+        const cell4 = newRow.insertCell(3);
+        const cell5 = newRow.insertCell(4);
+
+        cell1.textContent = name;
+
+        const quantityInput = document.createElement("input");
+        quantityInput.setAttribute("type", "text");
+        quantityInput.setAttribute("class", "quantityinput form-control col-lg-2");
+        quantityInput.setAttribute("id", id);
+        quantityInput.setAttribute('data-id', id);
+        quantityInput.setAttribute('data-index', tests.length - 1);
+        quantityInput.value = 0;
+        cell2.appendChild(quantityInput);
+
+        cell3.textContent = ref1;
+        cell4.textContent = ref2;
+        cell5.textContent = ref3;
+
+        console.log(tests)
+
+        quantityInput.addEventListener('change', function() {
+        let i = this.dataset.index;
+        console.log('Value:', this.value);
+        console.log('ID:', this.dataset.id);
+        console.log('Index:', this.dataset.index);
+        tests[i].value = this.value;
+        
+        console.log(tests);
+        document.querySelector("#item-json").value = JSON.stringify(tests);
+    });
+    }
+
+    function checkIfPresent(id) {
+        for (let i in tests) {
+            if (tests[i].id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    const selectMenu = document.querySelector('#test-select');
+    selectMenu.addEventListener('change', () => {
+        const selectedOption = selectMenu.options[selectMenu.selectedIndex];
+        const name = selectedOption.textContent;
+        const ref1 = selectedOption.dataset.ref1;
+        const ref2 = selectedOption.dataset.ref2;
+        const ref3 = selectedOption.dataset.ref3;
+        const id = selectedOption.dataset.id;
+
+        if (name !== 'Select' && !checkIfPresent(id)) {
+            addRow(name, id, ref1, ref2, ref3);
+        }
+        document.querySelector("#item-json").value = JSON.stringify(tests);
+    });
+</script>
+{% endblock %}
