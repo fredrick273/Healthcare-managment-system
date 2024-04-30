@@ -513,7 +513,7 @@ def schedule(request):
 
 def get_item_details(request, item_id):
     item = get_object_or_404(PharmacyItem, pk=item_id)
-    form = PharmacyItemForm(instance=item)
+    
     if request.method == 'POST':
         item.name = request.POST.get('name')
         item.price = request.POST.get('price')
@@ -523,5 +523,5 @@ def get_item_details(request, item_id):
         item.save()
         return redirect('pharmacyitem')
         
-    return render(request, 'edit_item_form.html', {'form': form,'item':item})
+    return render(request, 'edit_item_form.html', {'item':item})
 
