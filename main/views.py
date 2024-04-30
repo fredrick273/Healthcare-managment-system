@@ -5,7 +5,8 @@ from allauth.account.decorators import login_required
 from django.conf import settings
 import json
 
-from django.http import HttpResponse
+
+from django.http import JsonResponse
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
@@ -13,9 +14,24 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 
 # Create your views here.
+Profession_types= (
+    ("Doctor","Doctor"),
+    ("Nurse","Nurse"),
+    ("Reports","Reports"),
+    ("Lab","Lab"),
+    ("Pharamacy","Pharamacy"),
+    ("Undefined","Undefined"),
+)
 
 def home(request):
-    return render(request,'dashboard/index.html')
+    a = Appointment.objects.all().count()
+    amt = 0
+    for i in PharmacyBill.objects.all():
+        amt += i.net_total
+    p = Patient.objects.all().count()
+    d = Employee.objects.all().filter(Profession="Doctor").count()
+
+    return render(request,'dashboard/index.html',context={'a':a,'amt':amt,'p':p,'d':d})
 
 
 def register(request):
@@ -102,7 +118,7 @@ def newemp(request):
         return redirect(resolve_url('home'))
     
 
-    return render(request,'employee/new.html',context={'DepartmentList':Dept.objects.all()})
+    return render(request,'employee/new.html',context={'DepartmentList':Dept.objects.all(),'Profession_types':Profession_types})
 
 
 
@@ -150,10 +166,6 @@ def employees(request):
     return render(request,'employee/employees.html',context={'employees':e})
 
 
-def appointments(request):
-    a = Appointment.objects.all()
-    return render(request,'patient/appointments.html',context={'appointments':a})
-
 def pharmcyitem(request):
     if request.method == 'POST':
         p = PharmacyItem(
@@ -193,6 +205,8 @@ def pharmacybill(request):
                 quantity = curr_quantity
             )
             bill_item.save()
+            curr_item.curr_stock -= curr_quantity
+            curr_item.save()
             amt += curr_quantity * curr_item.price
             item_count += curr_quantity
         bill.net_total = amt
@@ -479,4 +493,35 @@ def billhistory(request):
         except Patient.DoesNotExist:
             pass
     return render(request,'history/bills.html',context={'bills':bills,'patient':patient})
+
+def appointments(request):
+    a = Appointment.objects.all()
+    doctors = Employee.objects.all().filter(Profession="Doctor")
+    if 'id' in request.GET:
+        doc = request.GET['id']
+        try:
+            d = Employee.objects.get(id=doc)
+            a = Appointment.objects.filter(Doctor = d)
+        except Patient.DoesNotExist:
+            pass
+
+    return render(request,'patient/appointments.html',context={'appointments':a,'doctors':doctors})
+
+
+def schedule(request):
+    return render(request,'patient/schedule.html')
+
+def get_item_details(request, item_id):
+    item = get_object_or_404(PharmacyItem, pk=item_id)
+    form = PharmacyItemForm(instance=item)
+    if request.method == 'POST':
+        item.name = request.POST.get('name')
+        item.price = request.POST.get('price')
+        item.location = request.POST.get('loc')
+        item.curr_stock = request.POST.get('stock')
+        item.category = request.POST.get('category')
+        item.save()
+        return redirect('pharmacyitem')
+        
+    return render(request, 'edit_item_form.html', {'form': form,'item':item})
 

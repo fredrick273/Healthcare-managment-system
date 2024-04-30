@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Edit Item</title>
+{% endblock %}
+
+{% block head %}
+    <!-- Additional CSS or JavaScript files can be included here if needed -->
+{% endblock %}
+
+{% block content %}
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="form-head align-items-center d-flex mb-sm-4 mb-3">
+            <div class="mr-auto">
+                <h2 class="text-black font-w600">Edit Item</h2>
+                <p class="mb-0">Hospital Admin Dashboard</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{% url 'get_item_details' item.id %}" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label class="text-black font-w500" for="name">Item Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ item.name }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500" for="price">Price</label>
+                                <input type="text" class="form-control" name="price" value="{{ item.price }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500" for="loc">Location</label>
+                                <input type="text" class="form-control" name="loc" value="{{ item.location }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500" for="stock">Stock</label>
+                                <input type="text" class="form-control" name="stock" value="{{ item.curr_stock }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500" for="category">Category</label>
+                                <input type="text" class="form-control" name="category" value="{{ item.category }}">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <!-- Additional JavaScript scripts can be included here if needed -->
+{% endblock %}

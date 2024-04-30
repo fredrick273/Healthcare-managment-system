@@ -13,6 +13,8 @@ urlpatterns = [
     path('appointments/',views.appointments,name='appointments'),
     path('appointments/new/',views.op,name='newappointment'),
 
+    path('schedule/',views.schedule,name='schedule'),
+
     path('department/',views.newDept,name='department'),
     
     path('dashboard/',views.dashboard),
@@ -33,4 +35,6 @@ urlpatterns = [
     path('history/prescription/',views.prescriptionhistory,name='prescriptionhistory'),
     path('history/lab/',views.labhistory,name='labhistory'),
     path('history/bills/',views.billhistory,name='billhistory'),
+    path('get-item-details/<int:item_id>/', views.get_item_details, name='get_item_details'),
+
 ]

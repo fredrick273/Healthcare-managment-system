@@ -1,17 +1,12 @@
-
 {% extends 'base.html' %}
 {% load static %}
-
-
-
-
 
 {% block title %}
 <title>Dashboard</title>
 {% endblock %}
 
 {% block head %}
-    <link href="{% static 'main/vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
+<link href="{% static 'main/vendor/datatables/css/jquery.dataTables.min.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -25,7 +20,6 @@
             </div>
             <div>
                 <a href="javascript:void(0)" class="btn btn-primary mr-3" data-toggle="modal" data-target="#addOrderModal">+New Item</a>
-                
             </div>
         </div>
         <!-- Add Order -->
@@ -34,8 +28,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Item</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <form action="" method="post">
@@ -44,7 +37,6 @@
                                 <label class="text-black font-w500" for="name">Item Name</label>
                                 <input type="text" class="form-control" name="name">
                             </div>
-                            
                             <div class="form-group">
                                 <label class="text-black font-w500" for="price">Price</label>
                                 <input type="text" class="form-control" name="price">
@@ -61,8 +53,6 @@
                                 <label class="text-black font-w500" for="category">Category</label>
                                 <input type="text" class="form-control" name="category">
                             </div>
-                            
-                            
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
@@ -77,7 +67,6 @@
                     <table id="example5" class="display dataTablesCard white-border table-responsive-xl">
                         <thead>
                             <tr>
-                                
                                 <th>Item ID</th>
                                 <th>Name</th>
                                 <th>Price</th>
@@ -90,68 +79,46 @@
                         <tbody>
                             {% for item in items %}
                             <tr>
-                                
-                                <td>{{item.id}}</td>
-                                <td>{{item.name}}</td>
-                                <td>{{item.price}}</td>
-                                <td>{{item.location}}</td>
-                                <td>{{item.curr_stock}}</td>
-                                <td>{{item.category}}</td>
-                               
-                                
-                                <!-- <td>
-                                    <span class="badge badge-warning light">
-                                        <i class="fa fa-circle text-warning mr-1"></i>
-                                        In Treatment
-                                    </span>
-                                </td> -->
-                                
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>{{ item.curr_stock }}</td>
+                                <td>{{ item.category }}</td>
                                 <td>
-                                    <div class="dropdown ml-auto text-right">
-                                        <div class="btn-link" data-toggle="dropdown">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4Z" stroke="#2E2E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </div>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" href="#">Accept Patient</a>
-                                            <a class="dropdown-item" href="#">Reject Order</a>
-                                            <a class="dropdown-item" href="#">View Details</a>
-                                        </div>
-                                    </div>
-                                </td>												
+                                    <button class="btn btn-primary edit-item-btn" data-item-id="{{ item.id }}">Edit</button>
+                                </td>
                             </tr>
                             {% endfor %}
-                            
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-
 {% endblock %}
-
 
 {% block script %}
 <script src="{% static 'main/vendor/datatables/js/jquery.dataTables.min.js' %}"></script>
-	<script>
-		(function($) {
-			var table = $('#example5').DataTable({
-				searching: false,
-				paging:true,
-				select: false,
-				//info: false,         
-				lengthChange:false 
-				
-			});
-			$('#example tbody').on('click', 'tr', function () {
-				var data = table.row( this ).data();
-				
-			});
-		})(jQuery);
-	</script>
-    {% endblock %}
+<script>
+    $(document).ready(function() {
+        var table = $('#example5').DataTable({
+            searching: false,
+            paging: true,
+            select: false,
+            lengthChange: false
+        });
+
+        // Event listener for edit item button click
+        $('.edit-item-btn').click(function() {
+            var itemId = $(this).data('item-id');
+            window.location = '/get-item-details/' + itemId + '/'
+            
+        });
+
+        // Event listener for save changes button click
+        
+    });
+</script>
+{% endblock %}

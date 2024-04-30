@@ -9,18 +9,15 @@
 <div class="content-body">
   <div class="container-fluid">
     <div class="page-titles">
-      <h4>Validation</h4>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="javascript:void(0)">Form</a></li>
-        <li class="breadcrumb-item active"><a href="javascript:void(0)">Validation</a></li>
-      </ol>
+      <h4>Employee</h4>
+      
     </div>
     <!-- row -->
     <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h4 class="card-title">Form Validation</h4>
+            <h4 class="card-title">New Employee</h4>
           </div>
           <div class="card-body">
             <div class="form-validation">
@@ -184,6 +181,18 @@
                         </select>
                       </div>
                     </div>
+                    <!-- Inside your HTML form -->
+<div class="form-group row">
+  <label class="col-lg-4 col-form-label" for="profession">Profession<span class="text-danger">*</span></label>
+  <div class="col-lg-6">
+      <select name="profession" id="profession" class="form-control">
+          {% for profession_choice in Profession_types %}
+          <option value="{{ profession_choice.0 }}">{{ profession_choice.1 }}</option>
+          {% endfor %}
+      </select>
+  </div>
+</div>
+
                   </div>
                 </div>
                 <div class="row">
