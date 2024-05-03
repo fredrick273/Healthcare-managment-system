@@ -27,7 +27,7 @@ These instructions will help you set up the project on your local machine for de
 
 1. Clone the repository:
 ```
-git clone https://github.com/your-username/healthcare-information-system.git
+git clone https://github.com/fredrick273/Healthcare-managment-system.git
 ```
 3. Create a virtual environment and activate it:
 ```
