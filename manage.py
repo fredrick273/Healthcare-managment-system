@@ -5,7 +5,7 @@ import sys
 # test 123
 # final clone test
 # offffff
-# HOPE IS THERE AGAIN this TIME
+# HOPE IS THERE AGAIN THIS TIME
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
