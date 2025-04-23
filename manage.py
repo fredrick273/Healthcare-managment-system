@@ -9,6 +9,8 @@ import sys
 # Testing
 # Final Now
 
+password = "12345678"
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
